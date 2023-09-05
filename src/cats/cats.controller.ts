@@ -12,19 +12,23 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateCatDto } from './dtos/create-cat.dto';
+import { CatsService } from './cats.service';
+import { Cat } from './interfaces/cat.interface';
 
 @Controller('cats')
 export class CatsController {
+  constructor(private catsService: CatsService) {}
+
   @Post()
   @HttpCode(204)
   @Header('Cache-Control', 'none')
-  create(@Body() createCatDto: CreateCatDto): string {
-    return 'Created a new cat!';
+  create(@Body() createCatDto: CreateCatDto) {
+    this.catsService.createCat(createCatDto);
   }
 
   @Get()
-  findAll(@Req() request: Request): string {
-    return 'All Cats';
+  async findAll(): Promise<Cat[]> {
+    return this.catsService.findAll();
   }
 
   @Put(':id')
