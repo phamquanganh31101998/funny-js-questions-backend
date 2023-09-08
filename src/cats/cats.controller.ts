@@ -4,6 +4,8 @@ import {
   Get,
   Header,
   HttpCode,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -14,6 +16,7 @@ import { Request } from 'express';
 import { CreateCatDto } from './dtos/create-cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
+import { ForbiddenException } from '../common/exception/forbidden.exception';
 
 @Controller('cats')
 export class CatsController {
@@ -23,12 +26,14 @@ export class CatsController {
   @HttpCode(204)
   @Header('Cache-Control', 'none')
   create(@Body() createCatDto: CreateCatDto) {
-    this.catsService.createCat(createCatDto);
+    throw new ForbiddenException();
+    // this.catsService.createCat(createCatDto);
   }
 
   @Get()
   async findAll(): Promise<Cat[]> {
-    return this.catsService.findAll();
+    throw new ForbiddenException();
+    // return this.catsService.findAll();
   }
 
   @Put(':id')
