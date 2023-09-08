@@ -7,6 +7,7 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Redirect,
@@ -17,27 +18,29 @@ import { CreateCatDto } from './dtos/create-cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
 import { ForbiddenException } from '../common/exception/forbidden.exception';
+import { ValidationPipe } from '../common/pipe/validation.pipe';
 
 @Controller('cats')
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
   @Post()
-  @HttpCode(204)
   @Header('Cache-Control', 'none')
-  create(@Body() createCatDto: CreateCatDto) {
-    throw new ForbiddenException();
-    // this.catsService.createCat(createCatDto);
+  async create(
+    @Body(new ValidationPipe()) createCatDto: CreateCatDto,
+  ): Promise<Cat> {
+    // throw new ForbiddenException();
+    return this.catsService.createCat(createCatDto);
   }
 
   @Get()
   async findAll(): Promise<Cat[]> {
-    throw new ForbiddenException();
-    // return this.catsService.findAll();
+    // throw new ForbiddenException();
+    return this.catsService.findAll();
   }
 
   @Put(':id')
-  editCatById(@Param('id') id: string): string {
+  editCatById(@Param('id', ParseIntPipe) id: string): string {
     return `You have just edited a cat with id ${id}`;
   }
 
@@ -51,7 +54,17 @@ export class CatsController {
   }
 
   @Get(':id')
-  findOneById(@Param('id') id: string): string {
-    return `Found a cat with id ${id}`;
+  findOne(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): string {
+    try {
+      return `Found a cat with id ${id}`;
+    } catch (e) {
+      throw e;
+    }
   }
 }
