@@ -12,6 +12,7 @@ import {
   Put,
   Redirect,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateCatDto } from './dtos/create-cat.dto';
@@ -19,13 +20,17 @@ import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
 import { ForbiddenException } from '../common/exception/forbidden.exception';
 import { ValidationPipe } from '../common/pipe/validation.pipe';
+import { RolesGuard } from '../common/guard/roles.guard';
+import { Roles } from '../common/decorator/roles.decorator';
 
 @Controller('cats')
+@UseGuards(RolesGuard)
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
   @Post()
   @Header('Cache-Control', 'none')
+  @Roles(['admin'])
   async create(
     @Body(new ValidationPipe()) createCatDto: CreateCatDto,
   ): Promise<Cat> {
