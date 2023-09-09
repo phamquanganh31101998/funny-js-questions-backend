@@ -25,6 +25,7 @@ import { RolesGuard } from '../common/guard/roles.guard';
 import { Roles } from '../common/decorator/roles.decorator';
 import { LoggingInterceptor } from '../common/interceptor/logging.interceptor';
 import { TransformInterceptor } from '../common/interceptor/transform.interceptor';
+import { CatId } from './decorator/cat-id.decorator';
 
 @Controller('cats')
 @UseGuards(RolesGuard)
@@ -43,7 +44,8 @@ export class CatsController {
   }
 
   @Get()
-  async findAll(): Promise<Cat[]> {
+  async findAll(@CatId('catId', ParseIntPipe) catId: string): Promise<Cat[]> {
+    console.log({ catId });
     // throw new ForbiddenException();
     return this.catsService.findAll();
   }
