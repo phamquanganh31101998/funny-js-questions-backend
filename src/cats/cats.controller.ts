@@ -13,6 +13,7 @@ import {
   Redirect,
   Req,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateCatDto } from './dtos/create-cat.dto';
@@ -22,9 +23,12 @@ import { ForbiddenException } from '../common/exception/forbidden.exception';
 import { ValidationPipe } from '../common/pipe/validation.pipe';
 import { RolesGuard } from '../common/guard/roles.guard';
 import { Roles } from '../common/decorator/roles.decorator';
+import { LoggingInterceptor } from '../common/interceptor/logging.interceptor';
+import { TransformInterceptor } from '../common/interceptor/transform.interceptor';
 
 @Controller('cats')
 @UseGuards(RolesGuard)
+@UseInterceptors(LoggingInterceptor, TransformInterceptor)
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
