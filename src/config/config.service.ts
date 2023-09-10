@@ -5,14 +5,13 @@ import * as path from 'path';
 import { EnvConfig } from './interfaces/env-config.interface';
 import { ProviderToken } from './constants/provider-token';
 import { ConfigOptions } from './interfaces/config-options.interface';
+import { MODULE_OPTIONS_TOKEN } from './config.module-definition';
 
 @Injectable()
 export class ConfigService {
   private readonly envConfig: EnvConfig;
 
-  constructor(
-    @Inject(ProviderToken.CONFIG_OPTIONS) private options: ConfigOptions,
-  ) {
+  constructor(@Inject(MODULE_OPTIONS_TOKEN) private options: ConfigOptions) {
     const filePath = `${process.env.NODE_ENV || 'development'}.env`;
     const envFile = path.resolve(
       __dirname,
