@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
+  Inject,
   Param,
   ParseIntPipe,
   Post,
@@ -26,12 +27,16 @@ import { Roles } from '../common/decorator/roles.decorator';
 import { LoggingInterceptor } from '../common/interceptor/logging.interceptor';
 import { TransformInterceptor } from '../common/interceptor/transform.interceptor';
 import { CatId } from './decorator/cat-id.decorator';
+import { REQUEST } from '@nestjs/core';
 
 @Controller('cats')
 @UseGuards(RolesGuard)
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
 export class CatsController {
-  constructor(private catsService: CatsService) {}
+  constructor(
+    private catsService: CatsService,
+    @Inject(REQUEST) private request: Request,
+  ) {}
 
   @Post()
   @Header('Cache-Control', 'none')
@@ -72,6 +77,7 @@ export class CatsController {
     )
     id: number,
   ): string {
+    console.log(this.request);
     try {
       return `Found a cat with id ${id}`;
     } catch (e) {
