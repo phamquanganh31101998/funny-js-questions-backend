@@ -27,7 +27,7 @@ import { Roles } from '../common/decorator/roles.decorator';
 import { LoggingInterceptor } from '../common/interceptor/logging.interceptor';
 import { TransformInterceptor } from '../common/interceptor/transform.interceptor';
 import { CatId } from './decorator/cat-id.decorator';
-import { REQUEST } from '@nestjs/core';
+import { LazyModuleLoader, REQUEST } from '@nestjs/core';
 
 @Controller('cats')
 @UseGuards(RolesGuard)
@@ -36,6 +36,7 @@ export class CatsController {
   constructor(
     private catsService: CatsService,
     @Inject(REQUEST) private request: Request,
+    private lazyModuleLoader: LazyModuleLoader,
   ) {}
 
   @Post()
@@ -67,6 +68,16 @@ export class CatsController {
       url: 'https://google.com',
       statusCode: 301,
     };
+  }
+
+  @Get('bark')
+  async bark(): Promise<string> {
+    const { DogsModule } = await import('../dogs/dogs.module');
+    const moduleRef = await this.lazyModuleLoader.load(() => DogsModule);
+    const { DogsService } = await import('../dogs/dogs.service');
+    const dogsService = moduleRef.get(DogsService);
+
+    return dogsService.bark();
   }
 
   @Get(':id')
