@@ -7,6 +7,7 @@ import {
   HttpException,
   HttpStatus,
   Inject,
+  OnModuleInit,
   Param,
   ParseIntPipe,
   Post,
@@ -32,12 +33,16 @@ import { LazyModuleLoader, REQUEST } from '@nestjs/core';
 @Controller('cats')
 @UseGuards(RolesGuard)
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
-export class CatsController {
+export class CatsController implements OnModuleInit {
   constructor(
     private catsService: CatsService,
     @Inject(REQUEST) private request: Request,
     private lazyModuleLoader: LazyModuleLoader,
   ) {}
+
+  onModuleInit(): any {
+    console.log('Init CatsController...');
+  }
 
   @Post()
   @Header('Cache-Control', 'none')
