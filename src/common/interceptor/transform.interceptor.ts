@@ -18,6 +18,11 @@ export class TransformInterceptor<T>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   intercept(context: ExecutionContext, next: CallHandler) {
+    const className = context.getClass();
+    const handlerName = context.getHandler();
+
+    console.log({ className, handlerName });
+
     return next.handle().pipe(map((data) => ({ data })));
   }
 }

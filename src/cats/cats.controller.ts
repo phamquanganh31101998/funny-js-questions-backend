@@ -30,6 +30,7 @@ import { TransformInterceptor } from '../common/interceptor/transform.intercepto
 import { CatId } from './decorator/cat-id.decorator';
 import { LazyModuleLoader, REQUEST } from '@nestjs/core';
 
+@Roles(['cats'])
 @Controller('cats')
 @UseGuards(RolesGuard)
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
@@ -93,9 +94,9 @@ export class CatsController implements OnModuleInit {
     )
     id: number,
   ): string {
-    console.log(this.request);
+    console.log(this.request.headers);
     try {
-      return `Found a cat with id ${id}`;
+      throw new ForbiddenException(`${id}`);
     } catch (e) {
       throw e;
     }
