@@ -1,5 +1,5 @@
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
-import { IQuestion } from './interfaces/question.inteface';
+import { IQuestion } from './interfaces/question.interface';
 import { QuestionsService } from './questions.service';
 import { LoggingInterceptor } from 'common/interceptor/logging.interceptor';
 import { TransformInterceptor } from 'common/interceptor/transform.interceptor';

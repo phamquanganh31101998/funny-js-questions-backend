@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IQuestion } from './interfaces/question.inteface';
+import { IQuestion } from './interfaces/question.interface';
 
 @Injectable()
 export class QuestionsService {
+  private questionList: IQuestion[] = [];
+
   async getAllQuestions(): Promise<IQuestion[]> {
-    return [];
+    return this.questionList;
   }
 }
