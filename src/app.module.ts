@@ -6,9 +6,10 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/filter/http-exception.filter';
 import { ConfigModule } from './config/config.module';
+import { QuestionsModule } from './questions/questions.module';
 
 @Module({
-  imports: [CatsModule, ConfigModule.forRoot({ folderPath: './config' })],
+  imports: [CatsModule, ConfigModule.forRoot({ folderPath: './config' }), QuestionsModule],
   controllers: [AppController],
   providers: [
     AppService,
