@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Cat } from './interfaces/cat.interface';
-import { ConfigService } from '../config/config.service';
+import { ConfigService } from 'config/config.service';
 
 @Injectable()
 export class CatsService implements OnModuleInit {
