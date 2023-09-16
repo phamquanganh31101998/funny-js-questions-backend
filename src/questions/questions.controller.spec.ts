@@ -3,9 +3,10 @@ import { QuestionsController } from './questions.controller';
 import { QuestionsService } from './questions.service';
 import { IQuestion } from './interfaces/question.interface';
 
+jest.mock('./questions.service');
+
 describe('QuestionsController', () => {
   let controller: QuestionsController;
-  let service: QuestionsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -14,7 +15,6 @@ describe('QuestionsController', () => {
     }).compile();
 
     controller = module.get<QuestionsController>(QuestionsController);
-    service = module.get<QuestionsService>(QuestionsService);
   });
 
   it('should be defined', () => {
@@ -24,13 +24,10 @@ describe('QuestionsController', () => {
   describe('getAllQuestions', () => {
     it('should return array of questions', async () => {
       const expectedResult = [] as IQuestion[];
-      jest
-        .spyOn(service, 'getAllQuestions')
-        .mockResolvedValueOnce(expectedResult);
 
       const result = await controller.getAllQuestions();
 
-      expect(result).toBe(expectedResult);
+      expect(result).toStrictEqual(expectedResult);
     });
   });
 });
