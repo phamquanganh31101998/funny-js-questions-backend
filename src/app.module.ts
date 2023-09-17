@@ -7,9 +7,15 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/filter/http-exception.filter';
 import { ConfigModule } from './config/config.module';
 import { QuestionsModule } from './questions/questions.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
-  imports: [CatsModule, ConfigModule.forRoot({ folderPath: './config' }), QuestionsModule],
+  imports: [
+    CatsModule,
+    ConfigModule.forRoot({ folderPath: './config' }),
+    QuestionsModule,
+    StorageModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
