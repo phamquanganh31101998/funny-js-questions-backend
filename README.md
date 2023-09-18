@@ -32,6 +32,14 @@
 $ yarn install
 ```
 
+## Prerequisites
+
+```bash
+# MySQL Database
+$ docker compose -f ./docker-compose.storage.yaml up
+
+```
+
 ## Running the app
 
 ```bash
