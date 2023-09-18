@@ -1,16 +1,11 @@
 export interface IQuestion {
-  question: string;
+  text: string;
   answers: Answer[];
   correctAnswerId: number;
-  isActive: IsActive;
+  isActive: boolean;
 }
 
 interface Answer {
   id: number;
   value: string;
-}
-
-enum IsActive {
-  INACTIVE = 0,
-  ACTIVE = 1,
 }

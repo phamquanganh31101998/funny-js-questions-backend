@@ -18,7 +18,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
     QuestionsModule,
-    StorageModule,
+    StorageModule.forRootAsync(),
 
     // For learning purpose only
     // CatsModule,
