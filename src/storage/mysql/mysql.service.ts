@@ -4,7 +4,6 @@ import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { IEnvironment } from 'common/interfaces/environment.interface';
 import { EnvKey } from 'common/constants/env-key.constant';
-import { Question } from '../entities/Question.entity';
 
 @Injectable()
 export class MysqlService implements TypeOrmOptionsFactory {
@@ -25,7 +24,7 @@ export class MysqlService implements TypeOrmOptionsFactory {
       username,
       password,
       database,
-      entities: [Question],
+      autoLoadEntities: true,
       synchronize: false,
       namingStrategy: new SnakeNamingStrategy(),
       logging: true,
