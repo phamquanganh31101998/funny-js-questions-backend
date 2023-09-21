@@ -53,6 +53,22 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## Migration
+
+```bash
+# create new
+$ typeorm migration:create ./src/storage/migrations/[migration-name]
+
+# generate from dataSource
+$ typeorm migration:generate -d ./dist/storage/dataSource.js ./src/storage/migrations/<migration-name>
+(Find your changes, deleted all other unrelevant queries.)
+
+# run/revert
+$ typeorm -d ./dist/storage/dataSource.js migration:{run|revert}
+(Note: no need to run manually because I have set migrationsRun to true)
+
+```
+
 ## Test
 
 ```bash
