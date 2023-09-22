@@ -27,7 +27,7 @@ export class QuestionsController {
 
   @Post()
   async createQuestion(
-    @Body(new ValidationPipe()) createQuestionDto: CreateQuestionDto,
+    @Body() createQuestionDto: CreateQuestionDto,
   ): Promise<Question> {
     return this.questionsService.createQuestion(createQuestionDto);
   }
