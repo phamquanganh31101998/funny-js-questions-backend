@@ -20,7 +20,10 @@ export class Question {
   @Column({ default: true })
   isActive: boolean;
 
-  @OneToMany(() => Answer, (answer) => answer.questionId, {})
+  @OneToMany(() => Answer, (answer) => answer.question, {
+    cascade: true,
+    orphanedRowAction: 'nullify',
+  })
   answers: Answer[];
 
   @CreateDateColumn()

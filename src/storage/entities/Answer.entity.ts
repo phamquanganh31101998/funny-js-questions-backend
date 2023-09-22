@@ -5,6 +5,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { Question } from './Question.entity';
@@ -20,10 +21,11 @@ export class Answer {
   @Column({ default: true })
   isActive: boolean;
 
+  @RelationId((answer: Answer) => answer.question)
   @Column({ nullable: false })
   questionId: number;
 
-  @ManyToOne(() => Question, (question) => question.id, {})
+  @ManyToOne(() => Question, (question) => question.answers, {})
   question: Question;
 
   @CreateDateColumn()
@@ -34,4 +36,8 @@ export class Answer {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
+
+  constructor(partial: Partial<Answer>) {
+    Object.assign(this, partial);
+  }
 }
