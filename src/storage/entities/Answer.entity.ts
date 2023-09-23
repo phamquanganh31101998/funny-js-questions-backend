@@ -8,6 +8,7 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude, Expose } from 'class-transformer';
 import { Question } from './Question.entity';
 
 @Entity()
@@ -26,15 +27,19 @@ export class Answer {
   questionId: number;
 
   @ManyToOne(() => Question, (question) => question.answers, {})
+  @Exclude()
   question: Question;
 
   @CreateDateColumn()
+  @Exclude()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updatedAt: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deletedAt: Date | null;
 
   constructor(partial: Partial<Answer>) {

@@ -8,6 +8,7 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 import { Answer } from './Answer.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Question {
@@ -27,11 +28,14 @@ export class Question {
   answers: Answer[];
 
   @CreateDateColumn()
+  @Exclude()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updatedAt: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deletedAt: Date | null;
 }

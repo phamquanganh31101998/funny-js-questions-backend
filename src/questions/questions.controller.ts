@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   Param,
@@ -16,7 +17,11 @@ import { CreateQuestionDto } from './dtos/create-question.dto';
 import { CreateAnswerForQuestionDto } from './dtos/create-answer-for-question.dto';
 
 @Controller('questions')
-@UseInterceptors(LoggingInterceptor, TransformInterceptor)
+@UseInterceptors(
+  LoggingInterceptor,
+  TransformInterceptor,
+  ClassSerializerInterceptor,
+)
 export class QuestionsController {
   constructor(private questionsService: QuestionsService) {}
 
