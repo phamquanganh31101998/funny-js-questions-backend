@@ -17,6 +17,7 @@ import { CreateQuestionDto } from './dtos/create-question.dto';
 import { CreateAnswerForQuestionDto } from './dtos/create-answer-for-question.dto';
 
 @Controller('questions')
+@Controller({ version: '1' })
 @UseInterceptors(
   LoggingInterceptor,
   TransformInterceptor,
