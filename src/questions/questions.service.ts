@@ -1,30 +1,51 @@
 import { Repository } from 'typeorm';
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EnvKey } from 'common/constants/env-key.constant';
 import { Question } from 'storage/entities/Question.entity';
 import { CreateQuestionDto } from './dtos/create-question.dto';
 import { CreateAnswerForQuestionDto } from './dtos/create-answer-for-question.dto';
 import { Answer } from '../storage/entities/Answer.entity';
+import { Cache } from 'cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 @Injectable()
 export class QuestionsService {
   private logger = new Logger(QuestionsService.name);
 
   constructor(
-    private configService: ConfigService,
     @InjectRepository(Question)
     private questionsRepository: Repository<Question>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async getAllQuestions(): Promise<Question[]> {
-    this.logger.verbose(this.configService.get<string>(EnvKey.DB_NAME));
-    return this.questionsRepository.find({
-      relations: {
-        answers: true,
-      },
-    });
+    // caching result
+    const cacheKey = 'query-get-all-questions';
+    const cachedResult = (await this.cacheManager.get(cacheKey)) as Question[];
+
+    let allQuestions: Question[] = [];
+
+    if (!cachedResult) {
+      allQuestions = await this.questionsRepository.find({
+        relations: {
+          answers: true,
+        },
+      });
+
+      if (!!allQuestions.length) {
+        await this.cacheManager.set(cacheKey, allQuestions);
+      }
+    } else {
+      allQuestions = cachedResult;
+    }
+
+    return allQuestions;
   }
 
   async createQuestion(

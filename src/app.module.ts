@@ -9,6 +9,7 @@ import { HttpExceptionFilter } from './common/filter/http-exception.filter';
 import { QuestionsModule } from './questions/questions.module';
 import { StorageModule } from './storage/storage.module';
 import { ConfigModule } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -17,8 +18,12 @@ import { ConfigModule } from '@nestjs/config';
       cache: true,
       isGlobal: true,
     }),
-    QuestionsModule,
     StorageModule.forRootAsync(),
+    QuestionsModule,
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 10000, //in ms,
+    }),
 
     // For learning purpose only
     // CatsModule,
