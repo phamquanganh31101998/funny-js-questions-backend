@@ -21,8 +21,10 @@ export class TransformInterceptor<T>
     const className = context.getClass();
     const handlerName = context.getHandler();
 
-    console.log({ className, handlerName });
+    // console.log({ className, handlerName });
 
-    return next.handle().pipe(map((data) => ({ data })));
+    return next.handle();
+
+    // return next.handle().pipe(map((data) => ({ data })));
   }
 }

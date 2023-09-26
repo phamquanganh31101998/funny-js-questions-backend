@@ -15,6 +15,7 @@ import { Question } from '../storage/entities/Question.entity';
 import { ValidationPipe } from '../common/pipe/validation.pipe';
 import { CreateQuestionDto } from './dtos/create-question.dto';
 import { CreateAnswerForQuestionDto } from './dtos/create-answer-for-question.dto';
+import { IApiResponse } from '../common/interfaces/api-response.interface';
 
 @Controller('questions')
 @Controller({ version: '1' })
@@ -27,8 +28,13 @@ export class QuestionsController {
   constructor(private questionsService: QuestionsService) {}
 
   @Get()
-  async getAllQuestions(): Promise<Question[]> {
-    return this.questionsService.getAllQuestions();
+  async getAllQuestions(): Promise<IApiResponse<Question[]>> {
+    const allQuestions = await this.questionsService.getAllQuestions();
+    return {
+      code: 200,
+      message: 'Get all questions success!',
+      data: allQuestions,
+    };
   }
 
   @Post()
