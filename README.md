@@ -56,7 +56,7 @@ $ yarn run start:prod
 ## Migration
 
 ```bash
-# create new
+# create new migration file
 $ typeorm migration:create ./src/storage/migrations/[migration-name]
 
 # generate from dataSource
